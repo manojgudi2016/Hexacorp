@@ -1,0 +1,278 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Manoj_PlaygroundModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'Manoj_Playground.dbo.docs' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="docs">
+          <Property Name="idnum" Type="int" />
+          <Property Name="pageseq" Type="int" />
+          <Property Name="doctext" Type="varchar" MaxLength="100" />
+        </EntityType>-->
+        <EntityType Name="Employees">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Department" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'Manoj_Playground.dbo.envelope' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="envelope">
+          <Property Name="id" Type="int" />
+          <Property Name="user_id" Type="int" />
+        </EntityType>-->
+        <EntityType Name="Franchisees">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="40" />
+          <Property Name="City" Type="nvarchar" MaxLength="40" />
+          <Property Name="State" Type="varchar" MaxLength="2" />
+        </EntityType>
+        <EntityType Name="Names">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Stores">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Franchisee" Type="int" />
+          <Property Name="Zipcode" Type="nvarchar" MaxLength="5" />
+          <Property Name="Years in Business" Type="int" />
+        </EntityType>
+        <EntityType Name="Unified Receipts">
+          <Key>
+            <PropertyRef Name="Register ID" />
+            <PropertyRef Name="Store ID" />
+            <PropertyRef Name="Sequence" />
+          </Key>
+          <Property Name="Register ID" Type="int" Nullable="false" />
+          <Property Name="Store ID" Type="int" Nullable="false" />
+          <Property Name="Sequence" Type="int" Nullable="false" />
+          <Property Name="Amount" Type="money" />
+          <Property Name="Date" Type="date" />
+          <Property Name="Cashier ID" Type="int" />
+        </EntityType>
+        <Association Name="FranchiseeFK">
+          <End Role="Franchisees" Type="Self.Franchisees" Multiplicity="0..1" />
+          <End Role="Stores" Type="Self.Stores" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Franchisees">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Stores">
+              <PropertyRef Name="Franchisee" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="StoreFK">
+          <End Role="Stores" Type="Self.Stores" Multiplicity="1" />
+          <End Role="Unified Receipts" Type="Self.Unified Receipts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Stores">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Unified Receipts">
+              <PropertyRef Name="Store ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Manoj_PlaygroundModelStoreContainer">
+          <EntitySet Name="Employees" EntityType="Self.Employees" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Franchisees" EntityType="Self.Franchisees" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Names" EntityType="Self.Names" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Stores" EntityType="Self.Stores" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Unified Receipts" EntityType="Self.Unified Receipts" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FranchiseeFK" Association="Self.FranchiseeFK">
+            <End Role="Franchisees" EntitySet="Franchisees" />
+            <End Role="Stores" EntitySet="Stores" />
+          </AssociationSet>
+          <AssociationSet Name="StoreFK" Association="Self.StoreFK">
+            <End Role="Stores" EntitySet="Stores" />
+            <End Role="Unified Receipts" EntitySet="Unified Receipts" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Manoj_PlaygroundModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Department" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Franchisee">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="State" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Stores" Relationship="Self.FranchiseeFK" FromRole="Franchisees" ToRole="Stores" />
+        </EntityType>
+        <EntityType Name="Name">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name1" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Store">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Franchisee" Type="Int32" />
+          <Property Name="Zipcode" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="Years_in_Business" Type="Int32" />
+          <NavigationProperty Name="Franchisee1" Relationship="Self.FranchiseeFK" FromRole="Stores" ToRole="Franchisees" />
+          <NavigationProperty Name="Unified_Receipts" Relationship="Self.StoreFK" FromRole="Stores" ToRole="Unified_Receipts" />
+        </EntityType>
+        <EntityType Name="Unified_Receipt">
+          <Key>
+            <PropertyRef Name="Register_ID" />
+            <PropertyRef Name="Store_ID" />
+            <PropertyRef Name="Sequence" />
+          </Key>
+          <Property Name="Register_ID" Type="Int32" Nullable="false" />
+          <Property Name="Store_ID" Type="Int32" Nullable="false" />
+          <Property Name="Sequence" Type="Int32" Nullable="false" />
+          <Property Name="Amount" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Date" Type="DateTime" Precision="0" />
+          <Property Name="Cashier_ID" Type="Int32" />
+          <NavigationProperty Name="Store" Relationship="Self.StoreFK" FromRole="Unified_Receipts" ToRole="Stores" />
+        </EntityType>
+        <Association Name="FranchiseeFK">
+          <End Role="Franchisees" Type="Self.Franchisee" Multiplicity="0..1" />
+          <End Role="Stores" Type="Self.Store" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Franchisees">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Stores">
+              <PropertyRef Name="Franchisee" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="StoreFK">
+          <End Role="Stores" Type="Self.Store" Multiplicity="1" />
+          <End Role="Unified_Receipts" Type="Self.Unified_Receipt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Stores">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Unified_Receipts">
+              <PropertyRef Name="Store_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Manoj_PlaygroundEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Employees" EntityType="Self.Employee" />
+          <EntitySet Name="Franchisees" EntityType="Self.Franchisee" />
+          <EntitySet Name="Names" EntityType="Self.Name" />
+          <EntitySet Name="Stores" EntityType="Self.Store" />
+          <EntitySet Name="Unified_Receipts" EntityType="Self.Unified_Receipt" />
+          <AssociationSet Name="FranchiseeFK" Association="Self.FranchiseeFK">
+            <End Role="Franchisees" EntitySet="Franchisees" />
+            <End Role="Stores" EntitySet="Stores" />
+          </AssociationSet>
+          <AssociationSet Name="StoreFK" Association="Self.StoreFK">
+            <End Role="Stores" EntitySet="Stores" />
+            <End Role="Unified_Receipts" EntitySet="Unified_Receipts" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Manoj_PlaygroundModelStoreContainer" CdmEntityContainer="Manoj_PlaygroundEntities">
+          <EntitySetMapping Name="Employees">
+            <EntityTypeMapping TypeName="Manoj_PlaygroundModel.Employee">
+              <MappingFragment StoreEntitySet="Employees">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Department" ColumnName="Department" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Franchisees">
+            <EntityTypeMapping TypeName="Manoj_PlaygroundModel.Franchisee">
+              <MappingFragment StoreEntitySet="Franchisees">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="State" ColumnName="State" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Names">
+            <EntityTypeMapping TypeName="Manoj_PlaygroundModel.Name">
+              <MappingFragment StoreEntitySet="Names">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name1" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Stores">
+            <EntityTypeMapping TypeName="Manoj_PlaygroundModel.Store">
+              <MappingFragment StoreEntitySet="Stores">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Franchisee" ColumnName="Franchisee" />
+                <ScalarProperty Name="Zipcode" ColumnName="Zipcode" />
+                <ScalarProperty Name="Years_in_Business" ColumnName="Years in Business" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Unified_Receipts">
+            <EntityTypeMapping TypeName="Manoj_PlaygroundModel.Unified_Receipt">
+              <MappingFragment StoreEntitySet="Unified Receipts">
+                <ScalarProperty Name="Register_ID" ColumnName="Register ID" />
+                <ScalarProperty Name="Store_ID" ColumnName="Store ID" />
+                <ScalarProperty Name="Sequence" ColumnName="Sequence" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Cashier_ID" ColumnName="Cashier ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
